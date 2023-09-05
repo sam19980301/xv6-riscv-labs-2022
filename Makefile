@@ -106,7 +106,7 @@ endif
 
 ifdef KCSAN
 CFLAGS += -DKCSAN
-KCSANFLAG = -fsanitize=thread
+KCSANFLAG = -fsanitize=thread -fno-inline
 endif
 
 # Disable PIE when possible (for Ubuntu 16.10 toolchain)
@@ -174,6 +174,7 @@ mkfs/mkfs: mkfs/mkfs.c $K/fs.h $K/param.h
 UPROGS=\
 	$U/_cat\
 	$U/_echo\
+	$U/_find\
 	$U/_forktest\
 	$U/_grep\
 	$U/_init\
@@ -181,12 +182,16 @@ UPROGS=\
 	$U/_ln\
 	$U/_ls\
 	$U/_mkdir\
+	$U/_pingpong\
+	$U/_primes\
 	$U/_rm\
 	$U/_sh\
+	$U/_sleep\
 	$U/_stressfs\
 	$U/_usertests\
 	$U/_grind\
 	$U/_wc\
+	$U/_xargs\
 	$U/_zombie\
 
 
@@ -342,7 +347,7 @@ grade:
 ##
 
 
-WEBSUB := https://6828.scripts.mit.edu/2022/handin.py
+WEBSUB := https://6828.scripts.mit.edu/2023/handin.py
 
 handin: tarball-pref myapi.key
 	@SUF=$(LAB); \
@@ -374,7 +379,7 @@ handin-check:
 		test "$$r" = y; \
 	fi
 
-UPSTREAM := $(shell git remote -v | grep -m 1 "xv6-labs-2022" | awk '{split($$0,a," "); print a[1]}')
+UPSTREAM := $(shell git remote -v | grep -m 1 "xv6-labs-2023" | awk '{split($$0,a," "); print a[1]}')
 
 tarball: handin-check
 	git archive --format=tar HEAD | gzip > lab-$(LAB)-handin.tar.gz
