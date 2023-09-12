@@ -133,3 +133,17 @@ printfinit(void)
   initlock(&pr.lock, "pr");
   pr.locking = 1;
 }
+
+void
+backtrace()
+{
+  uint64 fp_addr, pg_stackframe;
+  fp_addr = r_fp();
+  pg_stackframe = PGROUNDDOWN(fp_addr);
+
+  do
+  {
+    printf("%p\n", *(uint64 *)(fp_addr - 8));
+    fp_addr = *(uint64 *)(fp_addr - 16);
+  } while (pg_stackframe == PGROUNDDOWN(fp_addr));
+}
