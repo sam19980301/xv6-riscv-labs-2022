@@ -343,6 +343,9 @@ typedef uint64 *pagetable_t; // 512 PTEs
 #define PTE_W (1L << 2)
 #define PTE_X (1L << 3)
 #define PTE_U (1L << 4) // user can access
+#define PTE_COW_W (1L << 8) // cow reserved write bit
+#define PTE_COW_S (1L << 9) // cow shared bit
+#define PTE_W_SHIFT (8 - 2)
 
 // shift a physical address to the right place for a PTE.
 #define PA2PTE(pa) ((((uint64)pa) >> 12) << 10)
